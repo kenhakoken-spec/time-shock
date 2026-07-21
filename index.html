@@ -105,9 +105,8 @@ body{
   color:#2e4d3a;text-align:center;pointer-events:none;
   transition:color .2s, text-shadow .2s;
 }
-.qnum.cur{color:#3dff5e;text-shadow:0 0 10px #00c93a;animation:qnumpulse .5s ease-in-out infinite alternate}
+.qnum.cur{color:#3dff5e;text-shadow:0 0 10px #00c93a;scale:1.25}
 .qnum.past{color:#173325}
-@keyframes qnumpulse{from{scale:1}to{scale:1.35}}
 
 /* ===== center panel (ellipse) ===== */
 .hub{
@@ -339,7 +338,7 @@ button:active{scale:.94}
   const CONFIG = {
     TOTAL_SECONDS: 60,       // 制限時間
     SECONDS_PER_QUESTION: 5, // 1問あたりの秒数(60÷5=12問)
-    ANSWER_REVEAL_AT: 3.5,   // 各問のこの秒数経過で答えを自動表示
+    ANSWER_REVEAL_AT: 4,     // 各問のこの秒数経過で答えを自動表示(=終了1秒前)
   };
   const DEFAULT_QUESTIONS = [
     { q: '「森のバター」と呼ばれる食べ物は?', a: 'アボカド' },
