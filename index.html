@@ -9,208 +9,173 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Noto+Sans+JP:wght@500;700;900&family=Noto+Serif+JP:wght@900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --size: min(84vmin, 640px);
-  --gold-1:#fff3c4; --gold-2:#ffd75e; --gold-3:#c8912a; --gold-4:#7a5410;
+  --size: min(92vmin, 92vw, 620px);
+  --green-1:#b6ffb0; --green-2:#3dff5e; --green-3:#00c93a; --green-4:#007d22;
+  --gold-1:#fff3c4; --gold-2:#ffd75e; --gold-3:#c8912a;
+  --red-1:#ff7a6e; --red-2:#ff2e1e;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{
-  background:#01030f;
+  background:#020409;
   overflow:hidden;
   font-family:'Orbitron','Noto Sans JP',sans-serif;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:calc(var(--size)*0.022);
+  gap:calc(var(--size)*0.028);
   color:#fff;
   user-select:none;
 }
 
-/* ===== studio background ===== */
+/* ===== background ===== */
 .bg{position:fixed;inset:0;z-index:-2;
   background:
-    radial-gradient(ellipse 120% 90% at 50% 110%, #0a1e5e 0%, transparent 55%),
-    radial-gradient(ellipse 80% 60% at 50% -10%, #123a8f44 0%, transparent 60%),
-    radial-gradient(circle at 50% 50%, #061236 0%, #01030f 70%);
+    radial-gradient(ellipse 120% 80% at 50% 115%, #06331240 0%, transparent 55%),
+    radial-gradient(ellipse 90% 60% at 50% -15%, #0a3a1a33 0%, transparent 60%),
+    radial-gradient(circle at 50% 50%, #071018 0%, #020409 72%);
 }
-.spot{position:fixed;top:-30%;width:22vw;height:160%;z-index:-1;opacity:.14;pointer-events:none;
-  background:linear-gradient(to bottom,#9db8ff,transparent 75%);
+.bg.danger{
+  background:
+    radial-gradient(ellipse 120% 80% at 50% 115%, #33060640 0%, transparent 55%),
+    radial-gradient(ellipse 90% 60% at 50% -15%, #3a0a0a33 0%, transparent 60%),
+    radial-gradient(circle at 50% 50%, #180707 0%, #040202 72%);
+}
+.spot{position:fixed;top:-30%;width:22vw;height:160%;z-index:-1;opacity:.10;pointer-events:none;
+  background:linear-gradient(to bottom,#9dffb8,transparent 75%);
   filter:blur(18px);transform-origin:top center;
   animation:sway 9s ease-in-out infinite alternate;}
-.spot.l{left:6%;rotate:18deg}
-.spot.r{right:6%;rotate:-18deg;animation-delay:-4.5s}
+.spot.l{left:5%;rotate:18deg}
+.spot.r{right:5%;rotate:-18deg;animation-delay:-4.5s}
 @keyframes sway{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
-.stars{position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background-image:
-    radial-gradient(1.5px 1.5px at 12% 24%, #ffffff55, transparent),
-    radial-gradient(1px 1px at 78% 14%, #ffffff44, transparent),
-    radial-gradient(1.5px 1.5px at 32% 74%, #ffffff33, transparent),
-    radial-gradient(1px 1px at 88% 66%, #ffffff44, transparent),
-    radial-gradient(1.5px 1.5px at 56% 40%, #ffffff22, transparent),
-    radial-gradient(1px 1px at 20% 88%, #ffffff33, transparent);
-  animation:twinkle 4s ease-in-out infinite alternate;}
-@keyframes twinkle{from{opacity:.4}to{opacity:1}}
 
 /* ===== title ===== */
 .title{
   font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:calc(var(--size)*0.055);
-  letter-spacing:.22em;text-align:center;line-height:1;
-  background:linear-gradient(180deg,#fefefe 0%,#cfd8ea 35%,#5f7396 50%,#e8eefb 65%,#8fa3c4 100%);
+  font-size:calc(var(--size)*0.058);
+  letter-spacing:.2em;text-align:center;line-height:1;
+  background:linear-gradient(180deg,#fefefe 0%,#cfeada 35%,#5f9673 50%,#e8fbef 65%,#8fc4a3 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 2px 6px #000) drop-shadow(0 0 18px #4a7dff44);
+  filter:drop-shadow(0 2px 6px #000) drop-shadow(0 0 18px #2eff7040);
 }
-.title small{display:block;font-size:.36em;letter-spacing:.6em;margin-bottom:.3em;color:#8fa8d8;-webkit-text-fill-color:#8fa8d8;filter:none}
+.title small{display:block;font-size:.34em;letter-spacing:.55em;margin-bottom:.32em;
+  color:#6fae8a;-webkit-text-fill-color:#6fae8a;filter:none}
 
-/* ===== clock ===== */
-.stage{position:relative;width:var(--size);height:var(--size);flex-shrink:0}
-.clock{
-  position:absolute;inset:0;border-radius:50%;
-  background:
-    radial-gradient(circle at 50% 38%, #12318a 0%, #081b52 45%, #030a26 78%, #01051a 100%);
-  box-shadow:
-    0 0 calc(var(--size)*0.09) #1b47c855,
-    0 calc(var(--size)*0.02) calc(var(--size)*0.09) #000c,
-    inset 0 0 calc(var(--size)*0.12) #000a;
-}
-.clock::before{content:"";position:absolute;inset:calc(var(--size)*-0.012);border-radius:50%;z-index:-1;
-  background:conic-gradient(from 200deg,#e8eef8,#5a6b85 12%,#f4f8ff 25%,#8b9cb8 40%,#e2e9f5 55%,#4d5d78 70%,#eef3fb 85%,#e8eef8);
-  box-shadow:0 0 calc(var(--size)*0.05) #7fa4ff33;}
-.clock::after{content:"";position:absolute;inset:calc(var(--size)*0.028);border-radius:50%;pointer-events:none;
-  border:calc(var(--size)*0.006) solid transparent;
-  background:conic-gradient(from 0deg,var(--gold-2),var(--gold-4),var(--gold-1),var(--gold-3),var(--gold-2)) border-box;
-  -webkit-mask:linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;
-  opacity:.85;}
-
-.tick{position:absolute;left:50%;top:50%;width:calc(var(--size)*0.004);height:calc(var(--size)*0.018);
-  background:#b9c8e8;border-radius:2px;opacity:.55;
-  transform:translate(-50%,-50%) rotate(var(--a)) translateY(calc(var(--size)*-0.462));}
-.tick.big{width:calc(var(--size)*0.008);height:calc(var(--size)*0.03);background:var(--gold-2);opacity:.9;
-  box-shadow:0 0 6px #ffd75e88;}
-
-.beam{position:absolute;inset:calc(var(--size)*0.034);border-radius:50%;overflow:hidden;pointer-events:none;
-  opacity:0;transition:opacity .4s;}
-.beam.on{opacity:1}
-.beam-inner{position:absolute;inset:0;border-radius:50%;
-  background:conic-gradient(from 0deg, #6ea8ff00 0deg, #6ea8ff00 318deg, #7db0ff59 352deg, #d8e8ffb3 360deg);
-}
-.hand{position:absolute;left:50%;top:50%;width:calc(var(--size)*0.012);height:calc(var(--size)*0.44);
-  transform-origin:50% 100%;
-  transform:translate(-50%,-100%) rotate(0deg);
-  border-radius:99px;z-index:4;pointer-events:none;
-  background:linear-gradient(to top,#fff, #ffd75e 30%, #ff9d2e);
-  box-shadow:0 0 calc(var(--size)*0.02) #ffce4ecc, 0 0 calc(var(--size)*0.05) #ff9d2e66;}
-.hand::after{content:"";position:absolute;left:50%;top:-6px;width:calc(var(--size)*0.03);height:calc(var(--size)*0.03);
-  transform:translateX(-50%);border-radius:50%;
-  background:radial-gradient(circle,#fff,#ffd75e 60%,transparent 70%);}
-
-/* ===== number panels ===== */
-.num{
+/* ===== ring ===== */
+.stage{position:relative;width:var(--size);height:var(--size);flex-shrink:0;cursor:pointer}
+/* segments */
+.seg{
   position:absolute;left:50%;top:50%;
-  width:calc(var(--size)*0.128);height:calc(var(--size)*0.096);
-  margin-left:calc(var(--size)*-0.064);margin-top:calc(var(--size)*-0.048);
-  transform:rotate(var(--a)) translateY(calc(var(--size)*-0.375)) rotate(calc(var(--a)*-1));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:calc(var(--size)*0.052);
-  color:#31447c;
-  background:linear-gradient(180deg,#0d1f52,#050f30);
-  border:calc(var(--size)*0.0035) solid #2c3f7a;
-  border-radius:calc(var(--size)*0.018);
-  box-shadow:inset 0 2px 8px #000b, 0 2px 6px #0009;
-  clip-path:polygon(12% 0,88% 0,100% 50%,88% 100%,12% 100%,0 50%);
-  transition:all .25s;
+  width:calc(var(--size)*0.040);height:calc(var(--size)*0.088);
+  margin-left:calc(var(--size)*-0.020);margin-top:calc(var(--size)*-0.044);
+  transform:rotate(var(--a)) translateY(calc(var(--size)*-0.443));
+  border-radius:calc(var(--size)*0.008);
+  background:linear-gradient(180deg,#20262e,#12161c);
+  box-shadow:inset 0 1px 2px #0009, 0 0 2px #000;
+  transition:background .18s, box-shadow .18s;
 }
-.num.active{
-  background:linear-gradient(180deg,#ffe89a,#ff9d2e 55%,#ffcf4e);
-  border-color:#fff3c4;
-  color:#5a2e00;
-  text-shadow:0 1px 0 #fff8;
-  box-shadow:0 0 calc(var(--size)*0.035) #ffc93e, 0 0 calc(var(--size)*0.09) #ff9d2e88, inset 0 0 10px #fff5;
-  animation:pulse .5s ease-in-out infinite alternate;
+.seg.lit{
+  background:linear-gradient(180deg,var(--green-1) 0%,var(--green-2) 35%,var(--green-3) 75%,var(--green-4) 100%);
+  box-shadow:
+    0 0 calc(var(--size)*0.012) #3dff5ecc,
+    0 0 calc(var(--size)*0.03) #00c93a66,
+    inset 0 1px 1px #ffffff88;
 }
-.num.done{
-  color:#ffd75e;
-  background:linear-gradient(180deg,#173066,#0a1a44);
-  border-color:#c8912a;
-  text-shadow:0 0 10px #ffd75e99;
-  box-shadow:inset 0 2px 8px #000b, 0 0 10px #ffd75e33;
+.seg.lit.red{
+  background:linear-gradient(180deg,#ffd0c4 0%,var(--red-1) 30%,var(--red-2) 75%,#8f0d05 100%);
+  box-shadow:
+    0 0 calc(var(--size)*0.012) #ff5a3ecc,
+    0 0 calc(var(--size)*0.03) #ff2e1e66,
+    inset 0 1px 1px #ffffff88;
+  animation:segblink .5s steps(2) infinite;
 }
-@keyframes pulse{from{filter:brightness(1)}to{filter:brightness(1.35)}}
+.seg.head{animation:headblink .34s steps(2) infinite}
+@keyframes segblink{50%{filter:brightness(.55)}}
+@keyframes headblink{50%{filter:brightness(2)}}
 
-/* ===== center hub ===== */
+/* inner accent ring (dashes) */
+.iring{position:absolute;inset:calc(var(--size)*0.115);border-radius:50%;pointer-events:none;
+  background:
+    repeating-conic-gradient(from -2deg,
+      #ffb52e 0deg 10deg, transparent 10deg 30deg);
+  -webkit-mask:radial-gradient(circle, transparent 0 calc(50% - var(--size)*0.012), #000 calc(50% - var(--size)*0.012) 50%, transparent 50%);
+  mask:radial-gradient(circle, transparent 0 calc(50% - var(--size)*0.012), #000 calc(50% - var(--size)*0.012) 50%, transparent 50%);
+  opacity:.35;
+  animation:spin 30s linear infinite;
+}
+@keyframes spin{to{rotate:360deg}}
+
+/* ===== center panel ===== */
 .hub{
   position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:calc(var(--size)*0.56);height:calc(var(--size)*0.56);
+  width:calc(var(--size)*0.70);height:calc(var(--size)*0.70);
   border-radius:50%;z-index:5;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:calc(var(--size)*0.008);
-  background:radial-gradient(circle at 50% 32%, #1a3a8f 0%, #0a1c50 55%, #040c2c 100%);
-  box-shadow:0 0 calc(var(--size)*0.04) #000c, inset 0 0 calc(var(--size)*0.06) #000a;
+  gap:calc(var(--size)*0.012);
+  padding:calc(var(--size)*0.06);
+  background:radial-gradient(circle at 50% 35%, #0c1520 0%, #060b12 60%, #02050a 100%);
+  box-shadow:0 0 calc(var(--size)*0.05) #000d, inset 0 0 calc(var(--size)*0.08) #000;
+  border:1.5px solid #1b2836;
+  text-align:center;
 }
-.hub::before{content:"";position:absolute;inset:calc(var(--size)*-0.014);border-radius:50%;pointer-events:none;
-  border:calc(var(--size)*0.016) solid transparent;
-  background:conic-gradient(from 30deg,var(--gold-1),var(--gold-3) 20%,var(--gold-1) 40%,var(--gold-4) 60%,var(--gold-2) 80%,var(--gold-1)) border-box;
-  -webkit-mask:linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;
-  box-shadow:0 0 calc(var(--size)*0.04) #ffd75e44;}
-
-.team{
+.brand{
   font-family:'Noto Serif JP',serif;font-weight:900;
-  font-size:calc(var(--size)*0.088);
-  letter-spacing:.08em;white-space:nowrap;
-  background:linear-gradient(180deg,var(--gold-1) 0%,var(--gold-2) 38%,var(--gold-4) 52%,var(--gold-1) 66%,var(--gold-3) 100%);
+  letter-spacing:.1em;white-space:nowrap;
+  font-size:calc(var(--size)*0.042);
+  background:linear-gradient(180deg,var(--gold-1) 0%,var(--gold-2) 45%,var(--gold-3) 60%,var(--gold-1) 75%,var(--gold-3) 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 2px 3px #000) drop-shadow(0 0 16px #ffbf3f55);
+  filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 12px #ffbf3f44);
   transform:skewX(-4deg);
+  transition:font-size .3s;
 }
-.digital{
-  font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:calc(var(--size)*0.135);line-height:1;
-  color:#ffe14e;
-  text-shadow:0 0 calc(var(--size)*0.02) #ffb52e, 0 0 calc(var(--size)*0.06) #ff8d0088;
-  font-variant-numeric:tabular-nums;
-  letter-spacing:.05em;
-}
-.digital.danger{color:#ff4b3a;text-shadow:0 0 calc(var(--size)*0.02) #ff2e1e, 0 0 calc(var(--size)*0.07) #ff000088;
-  animation:blinkfast .5s steps(2) infinite;}
-@keyframes blinkfast{50%{opacity:.55}}
-.qlabel{
+.hub.idle .brand{font-size:calc(var(--size)*0.105)}
+.qno{
   font-family:'Orbitron',sans-serif;font-weight:700;
-  font-size:calc(var(--size)*0.03);letter-spacing:.3em;color:#7d94cf;
+  font-size:calc(var(--size)*0.028);letter-spacing:.35em;color:#4e8a63;
+  min-height:1.2em;
 }
-.qlabel b{color:#ffd75e;font-size:1.3em}
-
-/* ===== question display bar ===== */
-.qbar{
-  width:min(94vw, calc(var(--size)*1.35));
-  min-height:calc(var(--size)*0.12);
-  border-radius:calc(var(--size)*0.02);
-  padding:calc(var(--size)*0.018) calc(var(--size)*0.035);
-  display:flex;align-items:center;justify-content:center;text-align:center;
+.qno b{color:#3dff5e;font-size:1.35em;text-shadow:0 0 10px #00c93a99}
+.qtext{
   font-family:'Noto Sans JP',sans-serif;font-weight:900;
-  font-size:calc(var(--size)*0.048);line-height:1.35;
-  color:#fff;
-  background:linear-gradient(180deg,#0e2158ee,#050e2eee);
-  border:2px solid #2c3f7a;
-  box-shadow:0 4px 18px #000b, inset 0 0 24px #0009;
-  text-shadow:0 2px 4px #000;
-  cursor:pointer;
+  font-size:calc(var(--size)*0.052);line-height:1.42;
+  color:#f2f7ff;text-shadow:0 2px 6px #000;
+  display:flex;align-items:center;justify-content:center;
+  min-height:calc(var(--size)*0.24);
+  overflow-wrap:anywhere;
 }
-.qbar .ph{color:#4e69ad;font-size:.7em;font-weight:700;letter-spacing:.1em}
-.qbar .ans{color:#ffd75e;text-shadow:0 0 14px #ffb52e88}
-.qbar .ans::before{content:"A. ";color:#ff9d2e}
+.qtext.long{font-size:calc(var(--size)*0.040)}
+.qtext .hint{color:#39597a;font-size:.62em;font-weight:700;letter-spacing:.12em;line-height:1.8}
+.qtext .qmark{
+  display:block;font-family:'Orbitron',sans-serif;color:#ffb52e;font-weight:900;
+  font-size:.65em;letter-spacing:.1em;margin-bottom:.2em;text-shadow:0 0 12px #ff9d2e88;
+}
+.qtext .ans{
+  color:var(--gold-2);
+  text-shadow:0 0 14px #ffb52e99, 0 2px 4px #000;
+  animation:ansin .25s ease-out;
+}
+@keyframes ansin{from{opacity:0;scale:.7}to{opacity:1;scale:1}}
+.clock{
+  font-family:'Orbitron',sans-serif;font-weight:900;
+  font-size:calc(var(--size)*0.088);line-height:1;
+  color:#3dff5e;
+  text-shadow:0 0 calc(var(--size)*0.015) #00c93a, 0 0 calc(var(--size)*0.045) #00c93a77;
+  font-variant-numeric:tabular-nums;letter-spacing:.05em;
+  min-height:1em;
+}
+.clock.danger{color:#ff4b3a;text-shadow:0 0 calc(var(--size)*0.015) #ff2e1e, 0 0 calc(var(--size)*0.05) #ff000088;
+  animation:blinkfast .5s steps(2) infinite;}
+@keyframes blinkfast{50%{opacity:.5}}
 
 /* time up overlay */
 .timeup{
   position:absolute;inset:0;z-index:20;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(circle,#a00e0edd 0%,#4d0202dd 70%);
+  background:radial-gradient(circle,#a00e0ecc 0%,#4d0202dd 70%);
   opacity:0;pointer-events:none;transition:opacity .3s;
 }
 .timeup.show{opacity:1}
 .timeup span{
   font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:calc(var(--size)*0.12);letter-spacing:.08em;
+  font-size:calc(var(--size)*0.115);letter-spacing:.06em;
   color:#fff;text-shadow:0 0 20px #ff3b2e,0 0 60px #ff0000;
   animation:tuflash .45s steps(2) infinite, tuzoom .45s ease-in-out infinite alternate;
   transform:skewX(-6deg);
@@ -221,98 +186,93 @@ body{
 @keyframes shake{25%{translate:6px 2px}50%{translate:-5px -3px}75%{translate:4px -2px}}
 
 /* ===== controls ===== */
-.controls{display:flex;gap:calc(var(--size)*0.025);align-items:center;flex-wrap:wrap;justify-content:center}
+.controls{display:flex;gap:calc(var(--size)*0.022);align-items:center;flex-wrap:wrap;justify-content:center}
 button{
   font-family:'Orbitron','Noto Sans JP',sans-serif;font-weight:900;
-  font-size:calc(var(--size)*0.03);letter-spacing:.15em;
+  font-size:calc(var(--size)*0.03);letter-spacing:.12em;
   padding:calc(var(--size)*0.02) calc(var(--size)*0.05);
   border-radius:999px;border:2px solid;
   cursor:pointer;transition:all .15s;
 }
 button:active{scale:.94}
 #startBtn{
-  color:#3a2400;border-color:#fff3c4;
-  background:linear-gradient(180deg,#ffe89a,#ffb63e 55%,#ffd75e);
-  box-shadow:0 0 18px #ffb63e88, 0 4px 12px #000a, inset 0 1px 0 #fff8;
+  color:#03350f;border-color:#c9ffd2;
+  background:linear-gradient(180deg,#a8ffb2,#22e04e 55%,#54ff7a);
+  box-shadow:0 0 18px #2eff7066, 0 4px 12px #000a, inset 0 1px 0 #fff8;
 }
 #startBtn:hover{filter:brightness(1.12)}
 .sub{
-  color:#9db4e8;border-color:#3a5194;
-  background:linear-gradient(180deg,#152a5e,#0a1738);
+  color:#8fd8a8;border-color:#1f5232;
+  background:linear-gradient(180deg,#0c2417,#06120c);
   box-shadow:0 4px 12px #000a;
 }
-.sub:hover{border-color:#6f8ed4;color:#d5e2ff}
+.sub:hover{border-color:#3f9a63;color:#c9ffd8}
 #soundBtn{font-size:calc(var(--size)*0.026);padding:calc(var(--size)*0.015) calc(var(--size)*0.028)}
 
-/* ===== modal (question editor / answer list) ===== */
+/* ===== modal ===== */
 .modal{
   position:fixed;inset:0;z-index:50;display:none;
   align-items:center;justify-content:center;
-  background:#000a;backdrop-filter:blur(6px);
+  background:#000b;backdrop-filter:blur(6px);
 }
 .modal.show{display:flex}
 .sheet{
   width:min(94vw,640px);max-height:88vh;overflow-y:auto;
   border-radius:18px;padding:22px;
-  background:linear-gradient(180deg,#0c1c4c,#060d28);
-  border:2px solid #3a5194;
-  box-shadow:0 12px 50px #000d, 0 0 40px #1b47c844;
+  background:linear-gradient(180deg,#0a1c12,#050d08);
+  border:2px solid #1f5232;
+  box-shadow:0 12px 50px #000d, 0 0 40px #00c93a22;
   font-family:'Noto Sans JP',sans-serif;
 }
 .sheet h2{
   font-family:'Orbitron','Noto Sans JP',sans-serif;font-weight:900;letter-spacing:.15em;
-  font-size:18px;color:#ffd75e;text-align:center;margin-bottom:14px;
-  text-shadow:0 0 12px #ffb52e66;
+  font-size:18px;color:#3dff5e;text-align:center;margin-bottom:14px;
+  text-shadow:0 0 12px #00c93a66;
 }
 .qrow{display:grid;grid-template-columns:34px 1.6fr 1fr;gap:8px;margin-bottom:8px;align-items:center}
 .qrow .no{
-  font-family:'Orbitron',sans-serif;font-weight:900;color:#ffd75e;text-align:center;
-  font-size:15px;text-shadow:0 0 8px #ffb52e66;
+  font-family:'Orbitron',sans-serif;font-weight:900;color:#3dff5e;text-align:center;
+  font-size:15px;text-shadow:0 0 8px #00c93a66;
 }
 .qrow input{
   font-family:'Noto Sans JP',sans-serif;font-size:14px;font-weight:500;
   padding:9px 10px;border-radius:8px;color:#fff;
-  background:#040a20;border:1.5px solid #2c3f7a;outline:none;
+  background:#04120a;border:1.5px solid #1f5232;outline:none;
   transition:border-color .15s;
 }
-.qrow input:focus{border-color:#ffd75e;box-shadow:0 0 10px #ffb52e33}
-.qrow input::placeholder{color:#44598f}
+.qrow input:focus{border-color:#3dff5e;box-shadow:0 0 10px #00c93a33}
+.qrow input::placeholder{color:#3a6a4c}
 .sheet .btns{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
 .sheet button{font-size:13px;padding:10px 24px;letter-spacing:.1em}
 #saveBtn{
-  color:#3a2400;border-color:#fff3c4;
-  background:linear-gradient(180deg,#ffe89a,#ffb63e 55%,#ffd75e);
-  box-shadow:0 0 14px #ffb63e66;
+  color:#03350f;border-color:#c9ffd2;
+  background:linear-gradient(180deg,#a8ffb2,#22e04e 55%,#54ff7a);
+  box-shadow:0 0 14px #2eff7044;
 }
-/* answer list */
-.arow{display:grid;grid-template-columns:34px 1.6fr 1fr;gap:8px;padding:9px 4px;border-bottom:1px solid #1c2c5e;align-items:center}
-.arow .no{font-family:'Orbitron',sans-serif;font-weight:900;color:#ffd75e;text-align:center}
-.arow .q{color:#dfe8ff;font-size:14px;font-weight:700}
-.arow .a{color:#ffd75e;font-size:14px;font-weight:900;text-shadow:0 0 8px #ffb52e44}
-.hint{color:#6f86c4;font-size:12px;text-align:center;margin-top:10px}
+.arow{display:grid;grid-template-columns:34px 1.6fr 1fr;gap:8px;padding:9px 4px;border-bottom:1px solid #123324;align-items:center}
+.arow .no{font-family:'Orbitron',sans-serif;font-weight:900;color:#3dff5e;text-align:center}
+.arow .q{color:#dff5e8;font-size:14px;font-weight:700}
+.arow .a{color:var(--gold-2);font-size:14px;font-weight:900;text-shadow:0 0 8px #ffb52e44}
+.hint2{color:#4c8a63;font-size:12px;text-align:center;margin-top:10px}
 </style>
 </head>
 <body>
-<div class="bg"></div>
-<div class="stars"></div>
+<div class="bg" id="bg"></div>
 <div class="spot l"></div>
 <div class="spot r"></div>
 
 <div class="title"><small>QUIZ</small>TIME SHOCK</div>
 
 <div class="stage" id="stage">
-  <div class="clock" id="clock"></div>
-  <div class="beam" id="beam"><div class="beam-inner" id="beamInner"></div></div>
-  <div class="hand" id="hand"></div>
-  <div class="hub">
-    <div class="qlabel" id="qlabel">READY</div>
-    <div class="team">センマネ部</div>
-    <div class="digital" id="digital">60</div>
+  <div class="iring"></div>
+  <div class="hub idle" id="hub">
+    <div class="brand">センマネ部</div>
+    <div class="qno" id="qno"></div>
+    <div class="qtext" id="qtext"><span class="hint">画面タップでスタート<br>「問題編集」から12問セットできます</span></div>
+    <div class="clock" id="clockNum">60</div>
   </div>
   <div class="timeup" id="timeup"><span>TIME UP!!</span></div>
 </div>
-
-<div class="qbar" id="qbar" title="タップで答えを表示"><span class="ph">問題を編集して12問セットしよう(スタート後ここに問題が出ます)</span></div>
 
 <div class="controls">
   <button id="startBtn">Start</button>
@@ -329,10 +289,10 @@ button:active{scale:.94}
     <div id="editRows"></div>
     <div class="btns">
       <button id="saveBtn">保存</button>
-      <button id="clearBtn" class="sub">全消去</button>
+      <button id="clearBtn" class="sub">初期値に戻す</button>
       <button id="closeEditBtn" class="sub">閉じる</button>
     </div>
-    <div class="hint">この端末に自動保存されます(ブラウザのlocalStorage)</div>
+    <div class="hint2">この端末に自動保存されます(ブラウザのlocalStorage)</div>
   </div>
 </div>
 
@@ -349,39 +309,66 @@ button:active{scale:.94}
 
 <script>
 (() => {
-  const TOTAL = 60, SEG = 5, N = 12;
+  /* ================================================================
+   * ▼▼▼ 設定 & 問題データ:ここを書き換えれば差し替えできます ▼▼▼
+   * (ページの「問題編集」ボタンからも編集可能。編集内容は端末の
+   *  localStorage に保存され、こちらの初期データより優先されます)
+   * ================================================================ */
+  const CONFIG = {
+    TOTAL_SECONDS: 60,       // 制限時間
+    SECONDS_PER_QUESTION: 5, // 1問あたりの秒数(60÷5=12問)
+    ANSWER_REVEAL_AT: 3.5,   // 各問のこの秒数経過で答えを自動表示
+  };
+  const DEFAULT_QUESTIONS = [
+    { q: '「森のバター」と呼ばれる食べ物は?', a: 'アボカド' },
+    { q: '日本一高い山は?',                   a: '富士山' },
+    { q: '1ダースは何本?',                    a: '12本' },
+    { q: 'ビールの主な原料の麦は?',           a: '大麦' },
+    { q: '世界で一番人口が多い国は?',         a: 'インド' },
+    { q: 'サイコロの1の裏の数字は?',          a: '6' },
+    { q: '「令和」の前の元号は?',             a: '平成' },
+    { q: '信号機の真ん中の色は?',             a: '黄色' },
+    { q: '一年で一番日が短いのは何の日?',     a: '冬至' },
+    { q: 'トランプのカードは全部で何枚?(ジョーカー除く)', a: '52枚' },
+    { q: '「TIME SHOCK」日本語で言うと?',     a: '時間の衝撃' },
+    { q: '今夜の主役は?',                     a: 'センマネ部!' },
+  ];
+  /* ================================================================
+   * ▲▲▲ 差し替えはここまで ▲▲▲
+   * ================================================================ */
+
+  const TOTAL = CONFIG.TOTAL_SECONDS;
+  const SEG = CONFIG.SECONDS_PER_QUESTION;
+  const N = Math.floor(TOTAL / SEG);
+
   const $ = id => document.getElementById(id);
-  const clock=$('clock'), stage=$('stage'), hand=$('hand'), beam=$('beam'),
-        beamInner=$('beamInner'), digital=$('digital'), qlabel=$('qlabel'),
-        timeup=$('timeup'), qbar=$('qbar'),
+  const stage=$('stage'), hub=$('hub'), bg=$('bg'),
+        qno=$('qno'), qtext=$('qtext'), clockNum=$('clockNum'),
+        timeup=$('timeup'),
         startBtn=$('startBtn'), resetBtn=$('resetBtn'), soundBtn=$('soundBtn'),
         editBtn=$('editBtn'), listBtn=$('listBtn'),
         editModal=$('editModal'), listModal=$('listModal'),
         editRows=$('editRows'), listRows=$('listRows');
 
-  // build ticks + number panels
-  for (let i = 0; i < 60; i++) {
-    const t = document.createElement('div');
-    t.className = 'tick' + (i % 5 === 0 ? ' big' : '');
-    t.style.setProperty('--a', (i * 6) + 'deg');
-    clock.appendChild(t);
-  }
-  const nums = [];
-  for (let n = 1; n <= N; n++) {
-    const d = document.createElement('div');
-    d.className = 'num';
-    d.textContent = n;
-    d.style.setProperty('--a', (n * 30) + 'deg');
-    clock.appendChild(d);
-    nums.push(d);
+  // ---- build 60 gauge segments (12時位置から時計回り) ----
+  const segs = [];
+  for (let i = 0; i < TOTAL; i++) {
+    const s = document.createElement('div');
+    s.className = 'seg lit';
+    s.style.setProperty('--a', (i * (360 / TOTAL)) + 'deg');
+    stage.appendChild(s);
+    segs.push(s);
   }
 
-  // ---- questions (localStorage) ----
-  const KEY = 'timeshock.senmane.qa';
-  let qa = [];
-  try { qa = JSON.parse(localStorage.getItem(KEY)) || []; } catch(e) { qa = []; }
+  // ---- questions (localStorage overrides DEFAULT_QUESTIONS) ----
+  const KEY = 'timeshock.senmane.qa.v2';
+  let qa;
+  try { qa = JSON.parse(localStorage.getItem(KEY)); } catch (e) { qa = null; }
+  if (!Array.isArray(qa) || qa.length === 0) qa = DEFAULT_QUESTIONS.map(x => ({...x}));
   while (qa.length < N) qa.push({q:'', a:''});
+  qa = qa.slice(0, N);
   const save = () => localStorage.setItem(KEY, JSON.stringify(qa));
+  const esc = s => (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   // editor rows
   const qInputs = [], aInputs = [];
@@ -390,39 +377,15 @@ button:active{scale:.94}
     row.className = 'qrow';
     row.innerHTML = `<div class="no">${i+1}</div>`;
     const qi = document.createElement('input');
-    qi.placeholder = '問題(例:日本一高い山は?)';
+    qi.placeholder = '問題';
     const ai = document.createElement('input');
     ai.placeholder = '答え';
     row.appendChild(qi); row.appendChild(ai);
     editRows.appendChild(row);
     qInputs.push(qi); aInputs.push(ai);
   }
-  function loadEditor(){ qa.forEach((x,i)=>{ qInputs[i].value=x.q; aInputs[i].value=x.a; }); }
-  function readEditor(){ qa = qInputs.map((qi,i)=>({q:qi.value.trim(), a:aInputs[i].value.trim()})); }
-
-  // ---- question bar ----
-  let curQ = 0, ansShown = false;
-  function showQuestion(n){
-    if (n === curQ) return;
-    curQ = n; ansShown = false;
-    renderQbar();
-  }
-  function renderQbar(){
-    if (curQ === 0){
-      qbar.innerHTML = '<span class="ph">問題を編集して12問セットしよう(スタート後ここに問題が出ます)</span>';
-      return;
-    }
-    const item = qa[curQ-1];
-    const qtext = item.q || `第${curQ}問`;
-    qbar.innerHTML = ansShown && item.a
-      ? `<span class="ans">${esc(item.a)}</span>`
-      : `Q${curQ}. ${esc(qtext)}`;
-  }
-  const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  qbar.addEventListener('click', () => {
-    if (curQ === 0) { openEdit(); return; }
-    ansShown = !ansShown; renderQbar();
-  });
+  const loadEditor = () => qa.forEach((x,i)=>{ qInputs[i].value=x.q; aInputs[i].value=x.a; });
+  const readEditor = () => { qa = qInputs.map((qi,i)=>({q:qi.value.trim(), a:aInputs[i].value.trim()})); };
 
   // ---- sound (WebAudio) ----
   let audioOn = true, ctx = null;
@@ -436,38 +399,63 @@ button:active{scale:.94}
     o.connect(g).connect(a.destination);
     o.start(a.currentTime + when); o.stop(a.currentTime + when + dur + 0.02);
   }
-  const tickSnd = danger => blip(danger ? 1800 : 1200, 0.06, 'square', danger ? 0.09 : 0.05);
+  const tickSnd = danger => {
+    blip(danger ? 1900 : 1250, 0.05, 'square', danger ? 0.10 : 0.05);
+    if (danger) blip(950, 0.05, 'square', 0.06, 0.02);
+  };
   const chime = () => { blip(880, 0.12, 'sine', 0.1); blip(1320, 0.22, 'sine', 0.09, 0.09); };
+  const reveal = () => blip(1760, 0.15, 'triangle', 0.08);
   function buzzer() {
     if (!audioOn) return;
     for (let i = 0; i < 6; i++) blip(220, 0.28, 'sawtooth', 0.12, i * 0.36);
-    for (let i = 0; i < 6; i++) blip(233, 0.28, 'sawtooth', 0.1, i * 0.36);
+    for (let i = 0; i < 6; i++) blip(233, 0.28, 'sawtooth', 0.10, i * 0.36);
   }
 
   // ---- game state ----
   let startTs = null, raf = null, lastSec = -1, running = false, finished = false;
+  let shownQ = 0, shownAns = false, forceAns = false;
 
-  function setPanels(elapsed) {
-    const q = Math.min(N, Math.floor(elapsed / SEG) + 1);
-    nums.forEach((d, i) => {
-      d.classList.toggle('done', i + 1 < q);
-      d.classList.toggle('active', i + 1 === q && !finished);
-    });
-    qlabel.innerHTML = finished ? 'FINISH' : 'QUESTION <b>' + q + '</b>';
-    if (!finished) showQuestion(q);
+  function renderCenter(qIdx, ansVisible) {
+    if (qIdx !== shownQ) { shownQ = qIdx; shownAns = false; forceAns = false; }
+    const item = qa[qIdx - 1] || {q:'',a:''};
+    const showA = ansVisible || forceAns;
+    if (showA === shownAns && qtext.dataset.q == qIdx) return;
+    shownAns = showA;
+    qtext.dataset.q = qIdx;
+    qno.innerHTML = `Q <b>${qIdx}</b> / ${N}`;
+    if (showA) {
+      qtext.innerHTML = `<span class="ans"><span class="qmark">ANSWER</span>${esc(item.a) || '─'}</span>`;
+      reveal();
+    } else {
+      const t = item.q || `第${qIdx}問`;
+      qtext.innerHTML = `<span><span class="qmark">Q.</span>${esc(t)}</span>`;
+    }
+    qtext.classList.toggle('long', ((showA ? item.a : item.q) || '').length > 18);
   }
 
   function frame(ts) {
     if (!startTs) startTs = ts;
     const elapsed = Math.min(TOTAL, (ts - startTs) / 1000);
     const remain = TOTAL - elapsed;
-    const deg = elapsed / TOTAL * 360;
-    hand.style.transform = `translate(-50%,-100%) rotate(${deg}deg)`;
-    beamInner.style.transform = `rotate(${deg}deg)`;
-
-    digital.textContent = Math.ceil(remain);
     const danger = remain <= 10.4;
-    digital.classList.toggle('danger', danger && !finished);
+
+    // gauge: 経過した秒数ぶん消灯、先頭は点滅
+    const spent = Math.floor(elapsed);
+    segs.forEach((s, i) => {
+      const lit = i >= spent;
+      s.classList.toggle('lit', lit);
+      s.classList.toggle('red', lit && danger);
+      s.classList.toggle('head', i === spent);
+    });
+
+    clockNum.textContent = Math.ceil(remain);
+    clockNum.classList.toggle('danger', danger && !finished);
+    bg.classList.toggle('danger', danger && !finished);
+
+    // question / answer
+    const qIdx = Math.min(N, Math.floor(elapsed / SEG) + 1);
+    const tInSlot = elapsed - (qIdx - 1) * SEG;
+    renderCenter(qIdx, tInSlot >= CONFIG.ANSWER_REVEAL_AT);
 
     const whole = Math.floor(elapsed);
     if (whole !== lastSec) {
@@ -477,7 +465,6 @@ button:active{scale:.94}
         if (whole > 0 && whole % SEG === 0 && whole < TOTAL) chime();
       }
     }
-    setPanels(elapsed);
 
     if (elapsed >= TOTAL) { finish(); return; }
     raf = requestAnimationFrame(frame);
@@ -488,60 +475,61 @@ button:active{scale:.94}
     if (finished) reset();
     if (audioOn && ac().resume) ac().resume();
     running = true; finished = false;
+    hub.classList.remove('idle');
     startBtn.textContent = 'Running';
-    beam.classList.add('on');
     chime();
     raf = requestAnimationFrame(frame);
   }
 
   function finish() {
     running = false; finished = true;
-    digital.textContent = '0';
-    digital.classList.remove('danger');
-    nums.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
-    qlabel.textContent = 'FINISH';
+    clockNum.textContent = '0';
+    clockNum.classList.remove('danger');
+    bg.classList.remove('danger');
+    segs.forEach(s => s.classList.remove('lit','red','head'));
     timeup.classList.add('show');
     stage.classList.add('shake');
     startBtn.textContent = 'Start';
     buzzer();
     setTimeout(() => stage.classList.remove('shake'), 2000);
-    setTimeout(openList, 2200);   // 終了後に答え合わせ
+    setTimeout(openList, 2300);   // 終了後に答え合わせ
   }
 
   function reset() {
     cancelAnimationFrame(raf);
     running = false; finished = false; startTs = null; lastSec = -1;
-    curQ = 0; ansShown = false;
-    hand.style.transform = 'translate(-50%,-100%) rotate(0deg)';
-    beamInner.style.transform = 'rotate(0deg)';
-    beam.classList.remove('on');
-    digital.textContent = TOTAL;
-    digital.classList.remove('danger');
-    qlabel.textContent = 'READY';
+    shownQ = 0; shownAns = false; forceAns = false;
+    delete qtext.dataset.q;
+    segs.forEach(s => { s.classList.add('lit'); s.classList.remove('red','head'); });
+    clockNum.textContent = TOTAL;
+    clockNum.classList.remove('danger');
+    bg.classList.remove('danger');
+    hub.classList.add('idle');
+    qno.textContent = '';
+    qtext.innerHTML = '<span class="hint">画面タップでスタート<br>「問題編集」から12問セットできます</span>';
+    qtext.classList.remove('long');
     timeup.classList.remove('show');
     stage.classList.remove('shake');
-    nums.forEach(d => d.classList.remove('active', 'done'));
     startBtn.textContent = 'Start';
-    renderQbar();
   }
 
   // ---- modals ----
-  function openEdit(){ loadEditor(); editModal.classList.add('show'); }
-  function closeEdit(){ editModal.classList.remove('show'); }
-  function openList(){
+  const openEdit = () => { loadEditor(); editModal.classList.add('show'); };
+  const closeEdit = () => editModal.classList.remove('show');
+  function openList() {
     listRows.innerHTML = qa.map((x,i) =>
-      `<div class="arow"><div class="no">${i+1}</div><div class="q">${esc(x.q)||'<span style="color:#44598f">(未設定)</span>'}</div><div class="a">${esc(x.a)}</div></div>`
+      `<div class="arow"><div class="no">${i+1}</div><div class="q">${esc(x.q)||'<span style="color:#3a6a4c">(未設定)</span>'}</div><div class="a">${esc(x.a)}</div></div>`
     ).join('');
     listModal.classList.add('show');
   }
 
   editBtn.addEventListener('click', openEdit);
   $('closeEditBtn').addEventListener('click', closeEdit);
-  $('saveBtn').addEventListener('click', () => { readEditor(); save(); renderQbar(); closeEdit(); });
+  $('saveBtn').addEventListener('click', () => { readEditor(); save(); closeEdit(); reset(); });
   $('clearBtn').addEventListener('click', () => {
-    if (!confirm('12問すべて消去しますか?')) return;
-    qa = Array.from({length:N}, () => ({q:'',a:''}));
-    save(); loadEditor(); renderQbar();
+    if (!confirm('編集内容を破棄して初期の問題に戻しますか?')) return;
+    qa = DEFAULT_QUESTIONS.map(x => ({...x}));
+    save(); loadEditor();
   });
   listBtn.addEventListener('click', openList);
   $('closeListBtn').addEventListener('click', () => listModal.classList.remove('show'));
@@ -552,6 +540,11 @@ button:active{scale:.94}
   soundBtn.addEventListener('click', () => {
     audioOn = !audioOn;
     soundBtn.textContent = audioOn ? '🔊 ON' : '🔇 OFF';
+  });
+  // リングタップ:待機中はスタート、進行中は答えを前倒し表示
+  stage.addEventListener('click', () => {
+    if (!running && !finished) { start(); return; }
+    if (running) { forceAns = true; }
   });
 })();
 </script>
