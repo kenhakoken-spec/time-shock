@@ -21,7 +21,7 @@ body{
   overflow:hidden;
   font-family:'Orbitron','Noto Sans JP',sans-serif;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:calc(var(--w)*0.022);
+  gap:calc(var(--w)*0.018);
   color:#fff;
   user-select:none;
 }
@@ -50,17 +50,40 @@ body{
 /* ===== title ===== */
 .title{
   font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:calc(var(--w)*0.050);
+  font-size:calc(var(--w)*0.044);
   letter-spacing:.2em;text-align:center;line-height:1;
   background:linear-gradient(180deg,#fefefe 0%,#cfeada 35%,#5f9673 50%,#e8fbef 65%,#8fc4a3 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 2px 6px #000) drop-shadow(0 0 18px #2eff7040);
 }
-.title small{display:block;font-size:.34em;letter-spacing:.55em;margin-bottom:.32em;
+.title small{display:block;font-size:.34em;letter-spacing:.55em;margin-bottom:.3em;
   color:#6fae8a;-webkit-text-fill-color:#6fae8a;filter:none}
 
+/* ===== set tabs ===== */
+.tabs{
+  display:flex;gap:calc(var(--w)*0.008);
+  max-width:96vw;overflow-x:auto;padding:4px 6px;
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  font-family:'Orbitron',sans-serif;font-weight:900;
+  font-size:calc(var(--w)*0.022);letter-spacing:.05em;
+  padding:calc(var(--w)*0.010) calc(var(--w)*0.022);
+  border-radius:999px;border:1.5px solid #1f5232;
+  color:#5f9673;background:linear-gradient(180deg,#0a1c12,#050d08);
+  cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;
+}
+.tab:hover{border-color:#3f9a63;color:#c9ffd8}
+.tab.on{
+  color:#03350f;border-color:#c9ffd2;
+  background:linear-gradient(180deg,#a8ffb2,#22e04e 55%,#54ff7a);
+  box-shadow:0 0 12px #2eff7055;
+}
+.tab:active{scale:.94}
+
 /* ===== elliptical ring ===== */
-.stage{position:relative;width:var(--w);height:calc(var(--w)*0.72);flex-shrink:0;cursor:pointer}
+.stage{position:relative;width:var(--w);height:calc(var(--w)*0.70);flex-shrink:0;cursor:pointer}
 .seg{
   position:absolute;left:50%;top:50%;
   width:calc(var(--w)*0.034);height:calc(var(--w)*0.072);
@@ -88,7 +111,7 @@ body{
 @keyframes segblink{50%{filter:brightness(.55)}}
 @keyframes headblink{50%{filter:brightness(2)}}
 
-/* 5秒(1問)ごとの区切り線 */
+/* 1問ごとの区切り線 */
 .divider{
   position:absolute;left:50%;top:50%;
   width:calc(var(--w)*0.005);height:calc(var(--w)*0.105);
@@ -97,11 +120,11 @@ body{
   box-shadow:0 0 calc(var(--w)*0.010) #ffd75e99;
   opacity:.9;
 }
-/* リング内側の設問番号(区切りごと) */
+/* リング内側の設問番号 */
 .qnum{
   position:absolute;left:50%;top:50%;
   font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:calc(var(--w)*0.022);
+  font-size:calc(var(--w)*0.026);
   color:#2e4d3a;text-align:center;pointer-events:none;
   transition:color .2s, text-shadow .2s;
 }
@@ -111,7 +134,7 @@ body{
 /* ===== center panel (ellipse) ===== */
 .hub{
   position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:calc(var(--w)*0.64);height:calc(var(--w)*0.72*0.56);
+  width:calc(var(--w)*0.64);height:calc(var(--w)*0.70*0.56);
   border-radius:50%;z-index:5;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:calc(var(--w)*0.006);
@@ -284,11 +307,13 @@ button:active{scale:.94}
 
 <div class="title"><small>QUIZ</small>TIME SHOCK</div>
 
+<div class="tabs" id="tabs"></div>
+
 <div class="stage" id="stage">
   <div class="hub idle" id="hub">
     <div class="brand">センマネ部</div>
     <div class="qno" id="qno"></div>
-    <div class="qtext" id="qtext"><span class="hint">画面タップでスタート<br>「問題編集」から12問セットできます</span></div>
+    <div class="qtext" id="qtext"><span class="hint">画面タップでスタート</span></div>
     <div class="ansline" id="ansline"></div>
     <div class="clock" id="clockNum">60</div>
   </div>
@@ -306,7 +331,7 @@ button:active{scale:.94}
 <!-- question editor modal -->
 <div class="modal" id="editModal">
   <div class="sheet">
-    <h2>問題 &amp; 答え を編集</h2>
+    <h2 id="editTitle">問題 &amp; 答え を編集</h2>
     <div id="editRows"></div>
     <div class="btns">
       <button id="saveBtn">保存</button>
@@ -320,7 +345,7 @@ button:active{scale:.94}
 <!-- answers modal -->
 <div class="modal" id="listModal">
   <div class="sheet">
-    <h2>答え一覧</h2>
+    <h2 id="listTitle">答え一覧</h2>
     <div id="listRows"></div>
     <div class="btns">
       <button id="closeListBtn" class="sub">閉じる</button>
@@ -336,23 +361,92 @@ button:active{scale:.94}
    *  localStorage に保存され、こちらの初期データより優先されます)
    * ================================================================ */
   const CONFIG = {
-    TOTAL_SECONDS: 60,       // 制限時間
-    SECONDS_PER_QUESTION: 5, // 1問あたりの秒数(60÷5=12問)
-    ANSWER_REVEAL_AT: 4,     // 各問のこの秒数経過で答えを自動表示(=終了1秒前)
+    TOTAL_SECONDS: 60,        // 制限時間
+    SECONDS_PER_QUESTION: 10, // 1問あたりの秒数(60÷10=6問)
+    ANSWER_REVEAL_AT: 9,      // 各問のこの秒数経過で答えを自動表示(=終了1秒前)
   };
-  const DEFAULT_QUESTIONS = [
-    { q: '「森のバター」と呼ばれる食べ物は?', a: 'アボカド' },
-    { q: '日本一高い山は?',                   a: '富士山' },
-    { q: '1ダースは何本?',                    a: '12本' },
-    { q: 'ビールの主な原料の麦は?',           a: '大麦' },
-    { q: '世界で一番人口が多い国は?',         a: 'インド' },
-    { q: 'サイコロの1の裏の数字は?',          a: '6' },
-    { q: '「令和」の前の元号は?',             a: '平成' },
-    { q: '信号機の真ん中の色は?',             a: '黄色' },
-    { q: '一年で一番日が短いのは何の日?',     a: '冬至' },
-    { q: 'トランプのカードは全部で何枚?(ジョーカー除く)', a: '52枚' },
-    { q: '「TIME SHOCK」日本語で言うと?',     a: '時間の衝撃' },
-    { q: '今夜の主役は?',                     a: 'センマネ部!' },
+  // 10セット × 6問。 { q: 問題, a: 答え }
+  const DEFAULT_SETS = [
+    [ // SET 1
+      { q: '「森のバター」と呼ばれる食べ物は?', a: 'アボカド' },
+      { q: '日本一高い山は?',                   a: '富士山' },
+      { q: '1ダースは何本?',                    a: '12本' },
+      { q: '信号機の真ん中の色は?',             a: '黄色' },
+      { q: '「令和」の前の元号は?',             a: '平成' },
+      { q: '日本一長い川は?',                   a: '信濃川' },
+    ],
+    [ // SET 2
+      { q: '世界で一番人口が多い国は?',         a: 'インド' },
+      { q: 'サイコロの1の裏の数字は?',          a: '6' },
+      { q: 'トランプは全部で何枚?(ジョーカー除く)', a: '52枚' },
+      { q: '一年で一番昼が短い日は?',           a: '冬至' },
+      { q: '世界一高い山は?',                   a: 'エベレスト' },
+      { q: '日本の都道府県はいくつ?',           a: '47' },
+    ],
+    [ // SET 3
+      { q: '1週間は何時間?',                    a: '168時間' },
+      { q: '虹の色は何色?',                     a: '7色' },
+      { q: '夏のオリンピックは何年ごと?',       a: '4年ごと' },
+      { q: 'サッカーは1チーム何人?',            a: '11人' },
+      { q: '野球は1チーム何人?',                a: '9人' },
+      { q: '卓球の1ゲームは何点先取?',          a: '11点' },
+    ],
+    [ // SET 4
+      { q: '太陽系で一番大きい惑星は?',         a: '木星' },
+      { q: '地球の衛星といえば?',               a: '月' },
+      { q: '水を表す化学式は?',                 a: 'H2O' },
+      { q: '光と音、速いのはどっち?',           a: '光' },
+      { q: '1年が366日ある年を何という?',       a: 'うるう年' },
+      { q: '日本で一番大きい湖は?',             a: '琵琶湖' },
+    ],
+    [ // SET 5
+      { q: 'ことわざ「猫に◯◯」',               a: '小判' },
+      { q: 'ことわざ「豚に◯◯」',               a: '真珠' },
+      { q: '「早起きは◯◯の徳」',               a: '三文' },
+      { q: '「石の上にも◯年」',                 a: '三年' },
+      { q: '「七転び◯起き」',                   a: '八起き' },
+      { q: '「犬も歩けば◯に当たる」',           a: '棒' },
+    ],
+    [ // SET 6
+      { q: '「畑の肉」と呼ばれる食べ物は?',     a: '大豆' },
+      { q: 'ワインの原料の果物は?',             a: 'ぶどう' },
+      { q: '寿司の「ガリ」の原料は?',           a: '生姜' },
+      { q: 'チーズの原料は?',                   a: '牛乳' },
+      { q: 'ビールに使われる麦は?',             a: '大麦' },
+      { q: 'うどんの主な原料は?',               a: '小麦粉' },
+    ],
+    [ // SET 7
+      { q: '日本の首都は?',                     a: '東京' },
+      { q: '北海道の道庁所在地は?',             a: '札幌' },
+      { q: '日本一面積が大きい都道府県は?',     a: '北海道' },
+      { q: '日本一面積が小さい都道府県は?',     a: '香川県' },
+      { q: '富士山がまたがる2つの県は?',        a: '静岡県と山梨県' },
+      { q: '日本最西端の県は?',                 a: '沖縄県' },
+    ],
+    [ // SET 8
+      { q: 'アメリカの首都は?',                 a: 'ワシントンD.C.' },
+      { q: 'フランスの首都は?',                 a: 'パリ' },
+      { q: '自由の女神がある都市は?',           a: 'ニューヨーク' },
+      { q: 'ピラミッドで有名な国は?',           a: 'エジプト' },
+      { q: '世界一長い川は?',                   a: 'ナイル川' },
+      { q: 'オーストラリアの首都は?',           a: 'キャンベラ' },
+    ],
+    [ // SET 9
+      { q: 'じゃんけんでグーに勝つのは?',       a: 'パー' },
+      { q: '一円玉の重さは?',                   a: '1グラム' },
+      { q: '人の平熱はだいたい何度?',           a: '約36度' },
+      { q: '将棋の駒は1人何枚?',                a: '20枚' },
+      { q: 'トランプのキングの数字は?',         a: '13' },
+      { q: '花札は全部で何枚?',                 a: '48枚' },
+    ],
+    [ // SET 10
+      { q: '「乾杯」を英語で言うと?',           a: 'チアーズ(Cheers)' },
+      { q: 'ビールの大瓶は約何ml?',             a: '約633ml' },
+      { q: '居酒屋でとりあえず頼むものといえば?', a: 'ビール' },
+      { q: '「十八番」なんと読む?',             a: 'おはこ' },
+      { q: '二日酔いの原因となる物質は?',       a: 'アセトアルデヒド' },
+      { q: '今夜の主役は?',                     a: 'センマネ部!' },
+    ],
   ];
   /* ================================================================
    * ▲▲▲ 差し替えはここまで ▲▲▲
@@ -361,17 +455,19 @@ button:active{scale:.94}
   const TOTAL = CONFIG.TOTAL_SECONDS;
   const SEG = CONFIG.SECONDS_PER_QUESTION;
   const N = Math.floor(TOTAL / SEG);
+  const NUM_SETS = DEFAULT_SETS.length;
 
   const $ = id => document.getElementById(id);
-  const stage=$('stage'), hub=$('hub'), bg=$('bg'),
+  const stage=$('stage'), hub=$('hub'), bg=$('bg'), tabsEl=$('tabs'),
         qno=$('qno'), qtext=$('qtext'), ansline=$('ansline'), clockNum=$('clockNum'),
         timeup=$('timeup'),
         startBtn=$('startBtn'), resetBtn=$('resetBtn'), soundBtn=$('soundBtn'),
         editBtn=$('editBtn'), listBtn=$('listBtn'),
         editModal=$('editModal'), listModal=$('listModal'),
-        editRows=$('editRows'), listRows=$('listRows');
+        editRows=$('editRows'), listRows=$('listRows'),
+        editTitle=$('editTitle'), listTitle=$('listTitle');
 
-  // ---- build ring elements: 60 segments + 12 dividers + 12 numbers ----
+  // ---- build ring elements: 60 segments + N dividers + N numbers ----
   const segs = [], dividers = [], qnums = [];
   for (let i = 0; i < TOTAL; i++) {
     const s = document.createElement('div');
@@ -415,15 +511,46 @@ button:active{scale:.94}
   layout();
   addEventListener('resize', layout);
 
-  // ---- questions (localStorage overrides DEFAULT_QUESTIONS) ----
-  const KEY = 'timeshock.senmane.qa.v2';
-  let qa;
-  try { qa = JSON.parse(localStorage.getItem(KEY)); } catch (e) { qa = null; }
-  if (!Array.isArray(qa) || qa.length === 0) qa = DEFAULT_QUESTIONS.map(x => ({...x}));
-  while (qa.length < N) qa.push({q:'', a:''});
-  qa = qa.slice(0, N);
-  const save = () => localStorage.setItem(KEY, JSON.stringify(qa));
+  // ---- question sets (localStorage overrides DEFAULT_SETS) ----
+  const KEY = 'timeshock.senmane.sets.v3';
+  const KEY_SEL = 'timeshock.senmane.set.selected';
+  let sets;
+  try { sets = JSON.parse(localStorage.getItem(KEY)); } catch (e) { sets = null; }
+  if (!Array.isArray(sets) || sets.length !== NUM_SETS) {
+    sets = DEFAULT_SETS.map(s => s.map(x => ({...x})));
+  }
+  sets = sets.map((s, i) => {
+    const arr = (Array.isArray(s) ? s : []).slice(0, N).map(x => ({q: x?.q || '', a: x?.a || ''}));
+    while (arr.length < N) arr.push({q:'', a:''});
+    return arr;
+  });
+  let setIdx = parseInt(localStorage.getItem(KEY_SEL) || '0', 10);
+  if (isNaN(setIdx) || setIdx < 0 || setIdx >= NUM_SETS) setIdx = 0;
+
+  const save = () => localStorage.setItem(KEY, JSON.stringify(sets));
+  const qa = () => sets[setIdx];
   const esc = s => (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  // ---- set tabs ----
+  const tabBtns = [];
+  for (let i = 0; i < NUM_SETS; i++) {
+    const b = document.createElement('button');
+    b.className = 'tab';
+    b.textContent = 'SET ' + (i + 1);
+    b.addEventListener('click', () => selectSet(i));
+    tabsEl.appendChild(b);
+    tabBtns.push(b);
+  }
+  function renderTabs() {
+    tabBtns.forEach((b, i) => b.classList.toggle('on', i === setIdx));
+  }
+  function selectSet(i) {
+    if (i === setIdx && !running && !finished) { renderTabs(); return; }
+    setIdx = i;
+    localStorage.setItem(KEY_SEL, String(i));
+    renderTabs();
+    reset();
+  }
 
   // editor rows
   const qInputs = [], aInputs = [];
@@ -439,8 +566,8 @@ button:active{scale:.94}
     editRows.appendChild(row);
     qInputs.push(qi); aInputs.push(ai);
   }
-  const loadEditor = () => qa.forEach((x,i)=>{ qInputs[i].value=x.q; aInputs[i].value=x.a; });
-  const readEditor = () => { qa = qInputs.map((qi,i)=>({q:qi.value.trim(), a:aInputs[i].value.trim()})); };
+  const loadEditor = () => qa().forEach((x,i)=>{ qInputs[i].value=x.q; aInputs[i].value=x.a; });
+  const readEditor = () => { sets[setIdx] = qInputs.map((qi,i)=>({q:qi.value.trim(), a:aInputs[i].value.trim()})); };
 
   // ---- sound (WebAudio) ----
   let audioOn = true, ctx = null;
@@ -472,12 +599,12 @@ button:active{scale:.94}
 
   function renderCenter(qIdx, ansVisible) {
     if (qIdx !== shownQ) { shownQ = qIdx; shownAns = false; forceAns = false; qtext.dataset.q = ''; }
-    const item = qa[qIdx - 1] || {q:'',a:''};
+    const item = qa()[qIdx - 1] || {q:'',a:''};
     const showA = ansVisible || forceAns;
     if (qtext.dataset.q == qIdx && showA === shownAns) return;
     const isNew = qtext.dataset.q != qIdx;
     qtext.dataset.q = qIdx;
-    qno.innerHTML = `Q <b>${qIdx}</b> / ${N}`;
+    qno.innerHTML = `SET ${setIdx+1} &nbsp;Q <b>${qIdx}</b> / ${N}`;
     if (isNew) {
       const t = item.q || `第${qIdx}問`;
       qtext.innerHTML = `<span><span class="qmark">Q.</span>${esc(t)}</span>`;
@@ -573,8 +700,8 @@ button:active{scale:.94}
     clockNum.classList.remove('danger');
     bg.classList.remove('danger');
     hub.classList.add('idle');
-    qno.textContent = '';
-    qtext.innerHTML = '<span class="hint">画面タップでスタート<br>「問題編集」から12問セットできます</span>';
+    qno.innerHTML = `SET <b>${setIdx+1}</b>`;
+    qtext.innerHTML = '<span class="hint">画面タップでスタート</span>';
     qtext.classList.remove('long');
     ansline.innerHTML = '';
     ansline.classList.remove('long');
@@ -584,10 +711,15 @@ button:active{scale:.94}
   }
 
   // ---- modals ----
-  const openEdit = () => { loadEditor(); editModal.classList.add('show'); };
+  const openEdit = () => {
+    editTitle.innerHTML = `SET ${setIdx+1} の問題 &amp; 答え を編集`;
+    loadEditor();
+    editModal.classList.add('show');
+  };
   const closeEdit = () => editModal.classList.remove('show');
   function openList() {
-    listRows.innerHTML = qa.map((x,i) =>
+    listTitle.textContent = `SET ${setIdx+1} 答え一覧`;
+    listRows.innerHTML = qa().map((x,i) =>
       `<div class="arow"><div class="no">${i+1}</div><div class="q">${esc(x.q)||'<span style="color:#3a6a4c">(未設定)</span>'}</div><div class="a">${esc(x.a)}</div></div>`
     ).join('');
     listModal.classList.add('show');
@@ -597,8 +729,8 @@ button:active{scale:.94}
   $('closeEditBtn').addEventListener('click', closeEdit);
   $('saveBtn').addEventListener('click', () => { readEditor(); save(); closeEdit(); reset(); });
   $('clearBtn').addEventListener('click', () => {
-    if (!confirm('編集内容を破棄して初期の問題に戻しますか?')) return;
-    qa = DEFAULT_QUESTIONS.map(x => ({...x}));
+    if (!confirm(`SET ${setIdx+1} の編集内容を破棄して初期の問題に戻しますか?`)) return;
+    sets[setIdx] = DEFAULT_SETS[setIdx].map(x => ({...x}));
     save(); loadEditor();
   });
   listBtn.addEventListener('click', openList);
@@ -616,6 +748,9 @@ button:active{scale:.94}
     if (!running && !finished) { start(); return; }
     if (running) { forceAns = true; }
   });
+
+  renderTabs();
+  reset();
 })();
 </script>
 </body>
