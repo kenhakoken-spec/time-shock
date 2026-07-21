@@ -96,7 +96,7 @@ body{
 .hand{position:absolute;left:50%;top:50%;width:calc(var(--size)*0.012);height:calc(var(--size)*0.44);
   transform-origin:50% 100%;
   transform:translate(-50%,-100%) rotate(0deg);
-  border-radius:99px;z-index:6;pointer-events:none;
+  border-radius:99px;z-index:4;pointer-events:none;
   background:linear-gradient(to top,#fff, #ffd75e 30%, #ff9d2e);
   box-shadow:0 0 calc(var(--size)*0.02) #ffce4ecc, 0 0 calc(var(--size)*0.05) #ff9d2e66;}
 .hand::after{content:"";position:absolute;left:50%;top:-6px;width:calc(var(--size)*0.03);height:calc(var(--size)*0.03);
@@ -147,8 +147,11 @@ body{
   background:radial-gradient(circle at 50% 32%, #1a3a8f 0%, #0a1c50 55%, #040c2c 100%);
   box-shadow:0 0 calc(var(--size)*0.04) #000c, inset 0 0 calc(var(--size)*0.06) #000a;
 }
-.hub::before{content:"";position:absolute;inset:calc(var(--size)*-0.014);border-radius:50%;z-index:-1;
-  background:conic-gradient(from 30deg,var(--gold-1),var(--gold-3) 20%,var(--gold-1) 40%,var(--gold-4) 60%,var(--gold-2) 80%,var(--gold-1));
+.hub::before{content:"";position:absolute;inset:calc(var(--size)*-0.014);border-radius:50%;pointer-events:none;
+  border:calc(var(--size)*0.016) solid transparent;
+  background:conic-gradient(from 30deg,var(--gold-1),var(--gold-3) 20%,var(--gold-1) 40%,var(--gold-4) 60%,var(--gold-2) 80%,var(--gold-1)) border-box;
+  -webkit-mask:linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
   box-shadow:0 0 calc(var(--size)*0.04) #ffd75e44;}
 
 .team{
